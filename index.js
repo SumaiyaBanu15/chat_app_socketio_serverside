@@ -7,24 +7,24 @@ const messageRoute = require("./routes/messagesRoute.js");
 const socket = require('socket.io');
 
 dotenv.config();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 const app = express();
 
 const allowedOrigins = ["http://localhost:3000", "https://resilient-squirrel-7496d9.netlify.app"];
 
 app.use(cors(
-    {
-        origin: function (origin, callback) {
-            if (!origin) return callback(null, true); // Allow non-origin requests like mobile apps
-            if (allowedOrigins.indexOf(origin) === -1) {
-                const msg = `The CORS policy for this site does not allow access from the specified Origin.`;
-                return callback(new Error(msg), false);
-            }
-            return callback(null, true);
-        },
-        credentials: true
-    })
-);
+    // {
+    //     origin: function (origin, callback) {
+    //         if (!origin) return callback(null, true); // Allow non-origin requests like mobile apps
+    //         if (allowedOrigins.indexOf(origin) === -1) {
+    //             const msg = `The CORS policy for this site does not allow access from the specified Origin.`;
+    //             return callback(new Error(msg), false);
+    //         }
+    //         return callback(null, true);
+    //     },
+    //     credentials: true
+    // })
+));
 app.use(express.json());
 
 try {
@@ -47,7 +47,7 @@ const server = app.listen(PORT,
 
 const io = socket(server,{
     cors:{
-        origin:"allowedOrigins",
+        origin: allowedOrigins,
         credentials: true,
         methods: ['GET', 'POST'],
     }
